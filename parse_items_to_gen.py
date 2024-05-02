@@ -71,7 +71,12 @@ class parse():
 					l += '19'
 					l += str(random.randint(60, 99))
 				return l
-			ondate = '-' + str(random.randint(1, 12)) + '-' + str(random.randint(1, 30))
+			month = str(random.randint(1, 12)).zfill(2)
+			if month != '02':
+				enddate = str(random.randint(1, 30)).zfill(2)
+			else:
+				enddate = str(random.randint(1, 28)).zfill(2)
+			ondate = '-' + month + '-' + enddate
 			data = []
 			data.append(years() + ondate)
 			return data
@@ -89,7 +94,7 @@ class parse():
 				if len(contN) == 3:
 					data_born = data_B()
 					INN = random.randint(100000000000,999999999999)
-					csv_cont = [Id, *contN, data_born, INN, users[res], status]
+					csv_cont = [Id, *contN, *data_born, INN, users[res], status]
 					item.append(csv_cont)
 		return item
 

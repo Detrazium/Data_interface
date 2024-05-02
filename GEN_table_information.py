@@ -2,12 +2,13 @@ import psycopg2
 import parse_items_to_gen
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 import csv
+from PyQt5.QtWidgets import QApplication, QWidget
 
 password = '89105071534'
 
 linesClient = {'client_table': 'Id, SERIAL, PRIMARY KEY, Surname, Name, Middle_name, Date_of_birth, INN, FIO_responsible, STATUS'}
 linesUser = {'User_Table': 'FIO, Login, Password,'}
-class database_core():
+class databasegen_core():
 	def __init__(self):
 		# self.createdatabase()
 		# self.create_base_tables()
@@ -46,7 +47,7 @@ class database_core():
 		Name TEXT NOT NULL,
 		Middle_name TEXT NOT NULL,
 		Date_of_birth DATE NOT NULL,
-		INN integer NOT NULL,
+		INN bigint NOT NULL,
 		FIO_responsible text NOT NULL,
 		STATUS text NOT NULL
 		);
@@ -76,13 +77,31 @@ class database_core():
 			for el in user:
 				wrt_csv.writerow([*el])
 	def CSVGEN_dis(self):
-		self.gen_CSV_user(self.UserClient[0])
+		# self.gen_CSV_user(self.UserClient[0])
 		self.gen_CSV_client(self.UserClient[1])
 	def CSV_insertDB(self):
-		pass
+		connect = psycopg2.connect(database = 'postgress_intarface_db',
+								   user='postgres',
+								   password=password,
+								   host='127.0.0.1',
+								   port='')
+
+		cursor = connect.cursor()
+		cursor.execute('''COPY client_table(Id_accounts, Surname, Name, Middle_name, Date_of_birth, INN, FIO_responsible, STATUS)
+			   FROM 'C:\Datasets\csv_client.csv'
+			   DELIMITER ','
+			   CSV HEADER;
+			   ''')
+
+		cursor.execute('''COPY user_table(FIO,Login,Password)
+		FROM 'C:\Datasets\csv_user.csv'
+		DELIMITER ','
+		CSV HEADER;''')
+		connect.commit()
+		connect.close()
 
 def main():
-	i = database_core().CSV_insertDB()
+	joing = databasegen_core()
 
 if __name__ == '__main__':
 	main()
