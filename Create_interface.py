@@ -1,14 +1,16 @@
 from PyQt5.QtWidgets import (
-QApplication,
-QWidget,
-QPushButton,
-QTableWidgetItem,
-QMainWindow,
-QTableWidget,
-QLineEdit)
+	QApplication,
+	QWidget,
+	QPushButton,
+	QTableWidgetItem,
+	QMainWindow,
+	QTableWidget,
+	QLineEdit)
 import sys
 import psycopg2
 from PyQt5 import QtGui
+
+
 class Widjet(QWidget):
 	def __init__(self):
 		super().__init__()
@@ -48,12 +50,13 @@ class Widjet(QWidget):
 
 	def cont(self):
 		from GEN_table_information import password
-		self.conn = psycopg2.connect(database = 'postgress_intarface_db',
-									 user = 'postgres',
-									 password = password,
-									 host = '127.0.0.1',
+		self.conn = psycopg2.connect(database='postgress_intarface_db',
+									 user='postgres',
+									 password=password,
+									 host='127.0.0.1',
 									 port='')
 		self.cur = self.conn.cursor()
+
 	def upd(self):
 		self.conn.commit()
 		self.tb.updt()
@@ -77,12 +80,13 @@ class Widjet(QWidget):
 		self.cur.execute('delExempter')
 		self.upd()
 
+
 class Tb(QTableWidget):
 	def __init__(self, wg):
 		self.wg = wg
 		super().__init__(wg)
 		self.setGeometry(10, 10, 400, 500)
-		self.setColumnCount(5)
+		self.setColumnCount(10)
 		self.verticalHeader().hide();
 		self.updt()
 		self.setEditTriggers(QTableWidget.NoEditTriggers)
@@ -108,6 +112,8 @@ class Tb(QTableWidget):
 		self.wg.idp.setText(self.item(row, 0).text())
 		self.wg.fio.setText(self.item(row, 1).text().strip())
 		self.wg.oce.setText(self.item(row, 0).text().strip())
+
+
 app = QApplication(sys.argv)
 ex = Widjet()
 ex.show()
