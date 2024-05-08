@@ -12,13 +12,15 @@ QMessageBox,
 QVBoxLayout,
 QHBoxLayout,
 )
+import psycopg2
 import sys
 
 class Face(QWidget):
 	def __init__(self):
 		super().__init__()
+		self.cont()
 		self.setFixedSize(320, 200)
-		self.setWindowTitle('Приложение')
+		self.setWindowTitle('Авторизация')
 
 		self.kc = QHBoxLayout()
 		self.AUt = LogotBOX(self)
@@ -28,6 +30,16 @@ class Face(QWidget):
 		self.kc.addWidget(self.AUt)
 		self.kc.addWidget(self.btn)
 		self.setLayout(self.kc)
+
+	def cont(self):
+		password = '89105071534'
+		self.conter = psycopg2.connect(
+			database='postgress_intarface_db',
+			user='postgres',
+			password=password,
+			host='127.0.0.1',
+			port='')
+		self.cur = self.conter.cursor()
 
 	def Log_test(self):
 		self.mess = QMessageBox()
@@ -41,17 +53,18 @@ class LogotBOX(QWidget):
 	def __init__(self, wg):
 		self.wg = wg
 		super().__init__(wg)
-		self.laye = QVBoxLayout()
 
-		self.bnn = QPushButton("Авторизироваться")
-		self.bnn.clicked.connect(self.connecte)
+		self.laye = QVBoxLayout()
 
 		self.occ_ = QLabel('Login')
 		self.occ = QLineEdit(self)
 
 		self.occ2_ = QLabel('Password')
 		self.occ2 = QLineEdit(self)
+		self.occ2.setEchoMode(QLineEdit.Password)
 
+		self.bnn = QPushButton("Авторизироваться")
+		self.bnn.clicked.connect(self.connecte)
 
 		self.laye.addWidget(self.occ_)
 		self.laye.addWidget(self.occ)
@@ -60,6 +73,7 @@ class LogotBOX(QWidget):
 		self.laye.addWidget(self.bnn)
 		self.setLayout(self.laye)
 	def connecte(self):
+		self.conter.commit()
 		print('Autorising...')
 		self.wg.close()
 

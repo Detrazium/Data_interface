@@ -55,7 +55,7 @@ class Widjet(QWidget):
 									 password=password,
 									 host='127.0.0.1',
 									 port='')
-		self.cur = self.conn.cursor()
+		self.cur = None
 
 	def upd(self):
 		self.conn.commit()
