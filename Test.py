@@ -19,13 +19,19 @@ class Face(QWidget):
 	def __init__(self):
 		super().__init__()
 		self.cont()
-		self.setFixedSize(320, 200)
+		self.setFixedSize(320, 180)
 		self.setWindowTitle('Авторизация')
 
 		self.kc = QHBoxLayout()
-		self.AUt = LogotBOX(self)
+		self.AUt = LogotBOX(self, self.conter, self.cur)
+
 		self.btn = QPushButton('_проверка_\nСуществующие\n логины и пароли')
 		self.btn.clicked.connect(self.Log_test)
+
+		self.bnnexit = QPushButton('Закрыть', self)
+		self.bnnexit.resize(50, 20)
+		self.bnnexit.move(210, 140)
+		self.bnnexit.clicked.connect(self.close)
 
 		self.kc.addWidget(self.AUt)
 		self.kc.addWidget(self.btn)
@@ -50,9 +56,11 @@ class Face(QWidget):
 			self.mess.setDetailedText(file)
 		self.mess.show()
 class LogotBOX(QWidget):
-	def __init__(self, wg):
+	def __init__(self, wg, conter, cur):
 		self.wg = wg
 		super().__init__(wg)
+		self.conter = conter
+		self.cur = cur
 
 		self.laye = QVBoxLayout()
 
@@ -72,22 +80,30 @@ class LogotBOX(QWidget):
 		self.laye.addWidget(self.occ2)
 		self.laye.addWidget(self.bnn)
 		self.setLayout(self.laye)
-	def connecte(self):
-		self.conter.commit()
-		print('Autorising...')
-		self.wg.close()
+	def sqlIns(self):
+		logo, passw = self.occ.text(), self.occ2.text()
+		self.cur.execute('select login, password '
+						 'from user_table')
+		self.users = self.cur.fetchall()
+		for logo_passw in self.users:
+			if logo == logo_passw[0] and int(passw) == logo_passw[1]:
+				print(logo_passw)
+				return True
+		return False
 
-		self.user = user_window()
-		self.user.show()
+
+	def connecte(self):
+		print('Autorising...')
+		if self.sqlIns():
+			self.user = user_window()
+			self.user.show()
+		else:
+			print('Неверные данные логина или пароля')
 class user_window(QWidget):
 	def __init__(self):
 		super().__init__()
 		self.setFixedSize(500, 500)
 		self.cont = QVBoxLayout()
-
-
-
-
 
 		self.inn = windowInfo(self)
 		self.cont.addWidget(self.inn)
