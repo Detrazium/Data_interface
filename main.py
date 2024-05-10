@@ -37,8 +37,18 @@
 Горюнова Лидия Михайловна
 Литвинова Полина Николаевна
 """
-password = '89105071534'
+from Test_work_inbd_postgresql import startD
+from Test_work_inbd_CSV import startCSV
 
+def main():
+	inter = input('Версия с CSV ли Postgresql?: ')
+	if inter == 'CSV':
+		startCSV()
+	elif inter == 'Postgresql':
+		startD()
+
+if __name__ =='__main__':
+	main()
 
 
 
