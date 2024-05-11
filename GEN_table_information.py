@@ -4,7 +4,7 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 import csv
 from PyQt5.QtWidgets import QApplication, QWidget
 
-password = '89105071534'
+password = ''
 
 linesClient = {'client_table': 'Id, SERIAL, PRIMARY KEY, Surname, Name, Middle_name, Date_of_birth, INN, FIO_responsible, STATUS'}
 linesUser = {'User_Table': 'FIO, Login, Password,'}

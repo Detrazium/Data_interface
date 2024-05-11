@@ -244,7 +244,8 @@ def startCSV():
 	exe = Face()
 	exe.show()
 	sys.exit(ppp.exec_())
-
+def Sts():
+	startCSV()
 def main():
 	startCSV()
 if __name__ == '__main__':

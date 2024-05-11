@@ -21,8 +21,8 @@ QHBoxLayout,
 )
 import psycopg2
 import sys
-
 from No_import_file import password
+
 class Face(QWidget):
 	"""Окно авторизации"""
 	def __init__(self):
@@ -248,7 +248,6 @@ def startD():
 	exe = Face()
 	exe.show()
 	sys.exit(ppp.exec_())
-
 def main():
 	startD()
 if __name__ == '__main__':
